@@ -3,36 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bathroom Tracker</title>
+    <title>Potty Like a Rockstar</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        button { margin: 5px; padding: 10px 20px; font-size: 16px; }
+        body {
+            font-family: 'Fredoka One', sans-serif;
+            text-align: center;
+            background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .logo {
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        .button-container {
+            margin: 20px auto;
+            max-width: 600px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            margin: 15px 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .neutral {
+            background-color: #ffde59;
+            color: #333;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .red-button {
+            background-color: #ff4b5c;
+            color: white;
+            margin-top: 20px;
+        }
+        .horizontal-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .horizontal-container > div {
+            margin: 0 20px;
+        }
+        input[type="file"] {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Bathroom Tracker</h1>
-    <div id="buttons-container"></div>
-    <script>
-        const students = [
-            'Bobby', 'Alice', 'Charlie', 'David', 'Emily', 'Frank', 'Grace',
-            'Hannah', 'Ivy', 'Jack', 'Kate', 'Liam', 'Mason', 'Nora', 'Olivia',
-            'Parker', 'Quinn', 'Ruby', 'Sophia', 'Thomas', 'Uma', 'Violet', 'Will', 'Zoe'
-        ];
+    <!-- Logo -->
+    <img src="/static/logo.webp" alt="Potty Like a Rockstar" class="logo">
 
+    <!-- Buttons for students -->
+    <div id="buttons-container" class="button-container"></div>
+
+    <!-- Mark all in -->
+    <button class="neutral" onclick="markAllIn()">Mark All as Returned In</button>
+
+    <!-- Export buttons -->
+    <button class="neutral" onclick="exportAll()">Export All Time</button>
+    <button class="neutral" onclick="exportToday()">Export Today's Data</button>
+
+    <!-- Clear logs -->
+    <button class="red-button" onclick="clearLogs()">Clear All Logs</button>
+
+    <!-- Download Template and Upload Section -->
+    <div class="horizontal-container">
+        <!-- Download Template -->
+        <div>
+            <h3>Download Template</h3>
+            <a href="/template">
+                <button class="neutral">Download Student Template</button>
+            </a>
+        </div>
+
+        <!-- Upload Student List -->
+        <div>
+            <h3>Upload Student List</h3>
+            <input type="file" id="upload-file" />
+            <button class="neutral" onclick="uploadStudents()">Upload</button>
+        </div>
+    </div>
+
+    <script>
         const container = document.getElementById('buttons-container');
-        students.forEach(name => {
-            const button = document.createElement('button');
-            button.textContent = name;
-            button.onclick = () => {
-                fetch('/log', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name }),
-                }).then(response => response.json())
-                  .then(data => alert(data.message));
-            };
-            container.appendChild(button);
-        });
+        const students = {{ students|tojson }};
+        const buttonColors = {}; // Store persistent colors for each button
+
+        function updateStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(status => {
+                    container.innerHTML = '';
+                    students.forEach(name => {
+                        const button = document.createElement('button');
+                        button.textContent = name;
+
+                        // Assign persistent color
+                        if (!buttonColors[name]) {
+                            buttonColors[name] = getRandomDarkColor();
+                        }
+
+                        const studentStatus = status.find(s => s[0] === name);
+                        if (studentStatus && studentStatus[1] === 1) {
+                            button.style.backgroundColor = buttonColors[name];
+                            button.style.color = 'white';
+                        } else {
+                            button.style.backgroundColor = 'lightgray';
+                            button.style.color = 'black';
+                        }
+
+                        button.onclick = () => {
+                            fetch('/log', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ name }),
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    alert(data.message);
+                                    updateStatus();
+                                });
+                        };
+
+                        container.appendChild(button);
+                    });
+                });
+        }
+
+        function getRandomDarkColor() {
+            const r = Math.floor(Math.random() * 128); // Red value: 0-127 (darker range)
+            const g = Math.floor(Math.random() * 128); // Green value: 0-127
+            const b = Math.floor(Math.random() * 128); // Blue value: 0-127
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function exportAll() {
+            window.location.href = '/export_all';
+        }
+
+        function exportToday() {
+            window.location.href = '/export_today';
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all logs?')) {
+                fetch('/clear_logs', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        updateStatus();
+                    });
+            }
+        }
+
+        function markAllIn() {
+            fetch('/mark_all_in', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    updateStatus();
+                });
+        }
+
+        function uploadStudents() {
+            const fileInput = document.getElementById('upload-file');
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload_students', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    if (data.status === 'success') {
+                        window.location.reload();
+                    }
+                });
+        }
+
+        updateStatus();
     </script>
 </body>
 </html>
