@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bathroom Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        button { margin: 5px; padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Bathroom Tracker</h1>
+    <div id="buttons-container"></div>
+    <script>
+        const students = [
+            'Bobby', 'Alice', 'Charlie', 'David', 'Emily', 'Frank', 'Grace',
+            'Hannah', 'Ivy', 'Jack', 'Kate', 'Liam', 'Mason', 'Nora', 'Olivia',
+            'Parker', 'Quinn', 'Ruby', 'Sophia', 'Thomas', 'Uma', 'Violet', 'Will', 'Zoe'
+        ];
+
+        const container = document.getElementById('buttons-container');
+        students.forEach(name => {
+            const button = document.createElement('button');
+            button.textContent = name;
+            button.onclick = () => {
+                fetch('/log', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name }),
+                }).then(response => response.json())
+                  .then(data => alert(data.message));
+            };
+            container.appendChild(button);
+        });
+    </script>
+</body>
+</html>
