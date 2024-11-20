@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Potty Like a Rockstar</title>
+    <style>
+        body {
+            font-family: 'Fredoka One', sans-serif;
+            background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Enables flexbox */
+            justify-content: center; /* Centers horizontally */
+            align-items: center; /* Centers vertically */
+            height: 100vh; /* Full viewport height */
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box; /* Ensure padding is included in width */
+            text-align: center; /* Center-align content */
+        }
+        .logo {
+            max-width: 150px; /* Set a maximum width for the logo */
+            margin-bottom: 20px; /* Add spacing below the logo */
+        }
+        input {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff4b5c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #ff1f3c;
+        }
+        .error {
+            color: red;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        footer {
+            width: 100%;
+            background-color: #c1dfe4;
+            color: white;
+            text-align: center;
+            padding: 2px 0;
+            position: fixed; /* Ensures it stays at the bottom */
+            bottom: 0;
+            left: 0;
+        }
+        footer p {
+            margin: 0;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Add Logo -->
+        <img src="/static/logo.webp" alt="Potty Like a Rockstar Logo" class="logo">
+        
+        <h1>Teacher Login</h1>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        <a href="{{ url_for('make_account') }}">Make an Account</a>
+    </div>
+</body>
+<footer>
+    <p>For questions or concerns, contact Jackie Valeri. Email: jackievaleri8 "at" gmail "dot" com.</p>
+</footer>
+</html>

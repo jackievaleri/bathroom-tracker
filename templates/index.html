@@ -7,25 +7,50 @@
     <style>
         body {
             font-family: 'Fredoka One', sans-serif;
-            text-align: center;
             background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
             color: #333;
             margin: 0;
             padding: 0;
+            display: flex; /* Flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 110vh; /* Full height of viewport */
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+        }
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ff4b5c;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .logout-button:hover {
+            background-color: #ff1f3c;
         }
         .logo {
             max-width: 300px;
             margin: 20px auto;
+            display: block;
         }
         .button-container {
             margin: 20px auto;
-            max-width: 600px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 10px;
         }
         button {
-            margin: 15px 10px;
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -48,50 +73,82 @@
         }
         .horizontal-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between; /* Space out the sections */
+            align-items: center; /* Center items vertically */
             margin-top: 20px;
+            gap: 20px;
         }
         .horizontal-container > div {
-            margin: 0 20px;
+            flex: 1; /* Ensure equal space for both sections */
+            text-align: center; /* Center-align content */
         }
+
+        .horizontal-container > div h3 {
+            margin-bottom: 10px; /* Add spacing below the heading */
+        }
+
         input[type="file"] {
-            margin-top: 10px;
+            display: inline-block;
+            margin-right: 10px; /* Add spacing between file input and button */
+            vertical-align: middle; /* Align input and button */
+        }
+
+        button.neutral {
+            vertical-align: middle; /* Ensure alignment with file input */
+        }
+        footer {
+            width: 100%;
+            background-color: #c1dfe4;
+            color: white;
+            text-align: center;
+            padding: 2px 0;
+            position: fixed; /* Ensures it stays at the bottom */
+            bottom: 0;
+            left: 0;
+        }
+        footer p {
+            margin: 0;
+            font-size: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Logo -->
-    <img src="/static/logo.webp" alt="Potty Like a Rockstar" class="logo">
+    <div class="container">
+        <!-- Logout Button -->
+        <button class="logout-button" onclick="logout()">Logout</button>
 
-    <!-- Buttons for students -->
-    <div id="buttons-container" class="button-container"></div>
+        <!-- Logo -->
+        <img src="/static/logo.webp" alt="Potty Like a Rockstar" class="logo">
 
-    <!-- Mark all in -->
-    <button class="neutral" onclick="markAllIn()">Mark All as Returned In</button>
+        <!-- Buttons for students -->
+        <div id="buttons-container" class="button-container"></div>
 
-    <!-- Export buttons -->
-    <button class="neutral" onclick="exportAll()">Export All Time</button>
-    <button class="neutral" onclick="exportToday()">Export Today's Data</button>
-
-    <!-- Clear logs -->
-    <button class="red-button" onclick="clearLogs()">Clear All Logs</button>
-
-    <!-- Download Template and Upload Section -->
-    <div class="horizontal-container">
-        <!-- Download Template -->
-        <div>
-            <h3>Download Template</h3>
-            <a href="/template">
-                <button class="neutral">Download Student Template</button>
-            </a>
+        <!-- Control Buttons Section -->
+        <div class="section">
+            <button class="neutral" onclick="markAllIn()">Mark All as Returned In</button>
+            <button class="neutral" onclick="exportAll()">Export All Time</button>
+            <button class="neutral" onclick="exportToday()">Export Today's Data</button>
+            <button class="red-button" onclick="clearLogs()">Clear All Logs</button>
         </div>
 
-        <!-- Upload Student List -->
-        <div>
-            <h3>Upload Student List</h3>
-            <input type="file" id="upload-file" />
-            <button class="neutral" onclick="uploadStudents()">Upload</button>
+        <!-- Download Template and Upload Section -->
+        <div class="horizontal-container">
+            <!-- Download Template -->
+            <div>
+                <h3>Download Template</h3>
+                <a href="/template">
+                    <button class="neutral">Download Student Template</button>
+                </a>
+            </div>
+        
+            <!-- Upload Student List -->
+            <div>
+                <h3>Upload Student List</h3>
+                <div style="display: inline-block;">
+                    <input type="file" id="upload-file" />
+                    <button class="neutral" onclick="uploadStudents()">Upload</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -111,7 +168,7 @@
 
                         // Assign persistent color
                         if (!buttonColors[name]) {
-                            buttonColors[name] = getRandomDarkColor();
+                            buttonColors[name] = getRandomVibrantColor();
                         }
 
                         const studentStatus = status.find(s => s[0] === name);
@@ -141,11 +198,10 @@
                 });
         }
 
-        function getRandomDarkColor() {
-            const r = Math.floor(Math.random() * 128); // Red value: 0-127 (darker range)
-            const g = Math.floor(Math.random() * 128); // Green value: 0-127
-            const b = Math.floor(Math.random() * 128); // Blue value: 0-127
-            return `rgb(${r}, ${g}, ${b})`;
+        function getRandomVibrantColor() {
+            const vibrantColors = ['#f02078' , '#10144c', '#30ccdb', '#f4c60e', '#b098b7', '#f18702', '#1bb5c2'];
+            const randomIndex = Math.floor(Math.random() * vibrantColors.length);
+            return vibrantColors[randomIndex];
         }
 
         function exportAll() {
@@ -195,7 +251,15 @@
                 });
         }
 
+        function logout() {
+            window.location.href = '/logout';
+        }
+
         updateStatus();
     </script>
 </body>
+<footer>
+    <p>For questions or concerns, contact Jackie Valeri. Email: jackievaleri8 "at" gmail "dot" com.</p>
+</footer>
 </html>
+
