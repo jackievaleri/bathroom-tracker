@@ -1,0 +1,147 @@
+/* General Body Styles */
+body {
+    font-family: 'Fredoka One', sans-serif;
+    background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 110vh; /* Full height of viewport */
+}
+
+/* Main Container */
+.container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Logo Styles */
+.logo {
+    max-width: 300px;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Logout Button */
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4b5c;
+    color: white;
+    font-size: 14px; /* Compact font size */
+    padding: 5px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10; /* Ensures it stays on top */
+}
+
+.logout-button:hover {
+    background-color: #ff1f3c;
+}
+
+/* Student Buttons */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.student-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.student-button:hover {
+    background-color: #ddd;
+    transform: scale(1.1);
+}
+
+/* Control Buttons (Mark All, Export, Clear) */
+.section button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+button.neutral {
+    background-color: #ffde59;
+    color: #333;
+}
+
+button.red-button {
+    background-color: #ff4b5c;
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+button.red-button:hover {
+    background-color: #ff1f3c;
+}
+
+/* Download and Upload Section */
+.horizontal-container {
+    display: flex;
+    justify-content: space-between; /* Space out the sections */
+    align-items: center; /* Center items vertically */
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.horizontal-container > div {
+    flex: 1; /* Ensure equal space for both sections */
+    text-align: center; /* Center-align content */
+}
+
+.horizontal-container > div h3 {
+    margin-bottom: 10px; /* Add spacing below the heading */
+}
+
+input[type="file"] {
+    display: inline-block;
+    margin-right: 10px; /* Add spacing between file input and button */
+    vertical-align: middle; /* Align input and button */
+}
+
+button.neutral {
+    vertical-align: middle; /* Ensure alignment with file input */
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    background-color: #c1dfe4;
+    color: white;
+    text-align: center;
+    padding: 2px 0;
+    position: fixed; /* Ensures it stays at the bottom */
+    bottom: 0;
+    left: 0;
+}
+
+footer p {
+    margin: 0;
+    font-size: 10px;
+}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Potty Like a Rockstar{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% block content %}
+    <!-- Default content goes here -->
+    {% endblock %}
+    <footer>
+        <p>For questions or concerns, contact Jackie Valeri. Email: jackievaleri8 "at" gmail "dot" com.</p>
+    </footer>
+</body>
+</html>
